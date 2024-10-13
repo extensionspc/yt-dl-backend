@@ -3,14 +3,10 @@ const ytdl = require('ytdl-core');
 const cors = require('cors');
 
 const app = express();
-app.use(cors()); // Enable CORS
+app.use(cors());
 
-// Root route to test if the server is running
-app.get('/', (req, res) => {
-    res.send('API is running. Use /api/video?url=<youtube-url>');
-});
+const proxyUrl = 'https://cors-anywhere.herokuapp.com/';  // Example proxy
 
-// API route to fetch video info
 app.get('/api/video', async (req, res) => {
     const videoUrl = req.query.url;
     if (!ytdl.validateURL(videoUrl)) {
@@ -18,7 +14,7 @@ app.get('/api/video', async (req, res) => {
     }
 
     try {
-        const info = await ytdl.getInfo(videoUrl);
+        const info = await ytdl.getInfo(proxyUrl + videoUrl);
         const downloads = info.formats.map(format => ({
             url: format.url,
             extension: format.container,
