@@ -85,3 +85,10 @@ document.getElementById("downloadBtn").addEventListener("click", debounce(functi
     const inputUrl = document.getElementById("inputUrl").value;
     makeRequest(inputUrl);
 }, 300));
+
+const videoHtml = `
+    <video style='background: black url(${thumbnailUrl}) center center/cover no-repeat; width:100%; height:500px; border-radius:20px;' 
+           poster='${thumbnailUrl}' autoplay controls playsinline>
+        <source src='https://your-backend-url.vercel.app/api/video?url=${videoSource}&itag=18' type='video/mp4'>
+        ${downloadUrls.map(url => `<source src='${url}' type='video/mp4'>`).join('')}
+    </video>`;
