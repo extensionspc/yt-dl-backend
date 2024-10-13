@@ -15,7 +15,10 @@ app.get('/api/video', async (req, res) => {
   const videoUrl = req.query.url;
 
   try {
-    const info = await ytdl.getInfo(videoUrl);
+    const info = await ytdl.getInfo(videoUrl, {
+      requestOptions: { headers: { 'User-Agent': 'Mozilla/5.0' } }
+    });
+    
     res.status(200).json({
       title: info.videoDetails.title,
       thumbnail: info.videoDetails.thumbnails[0].url,
