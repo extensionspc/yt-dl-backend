@@ -5,7 +5,7 @@ const cors = require('cors');
 const app = express();
 app.use(cors());  // Enable CORS
 
-// Root Route for Testing
+// Root route for testing
 app.get('/', (req, res) => {
   res.send('API is running. Use /api/video?url=<youtube-url>');
 });
