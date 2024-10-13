@@ -3,20 +3,21 @@ const youtubedl = require('youtube-dl-exec');
 const cors = require('cors');
 
 const app = express();
-app.use(cors());
+app.use(cors());  // Enable CORS
 
-// API Route
+// Route to handle video fetching
 app.get('/api/video', async (req, res) => {
   const videoUrl = req.query.url;
+
   try {
     const info = await youtubedl(videoUrl, { dumpSingleJson: true });
-    res.json({
+    res.status(200).json({
       title: info.title,
       thumbnail: info.thumbnail,
       downloads: info.formats.map(format => ({
         url: format.url,
         extension: format.ext,
-        size: format.filesize || 'N/A',
+        size: format.filesize || 'N/A'
       }))
     });
   } catch (error) {
