@@ -3,9 +3,9 @@ const youtubedl = require('youtube-dl-exec');
 const cors = require('cors');
 
 const app = express();
-app.use(cors());  // Enable CORS to avoid cross-origin issues
+app.use(cors());
 
-// Route to fetch video information
+// API Route
 app.get('/api/video', async (req, res) => {
   const videoUrl = req.query.url;
   try {
@@ -16,11 +16,11 @@ app.get('/api/video', async (req, res) => {
       downloads: info.formats.map(format => ({
         url: format.url,
         extension: format.ext,
-        size: format.filesize || 'N/A'
+        size: format.filesize || 'N/A',
       }))
     });
   } catch (error) {
-    console.error('Error:', error);
+    console.error('Error fetching video:', error.message);
     res.status(500).json({ error: 'Failed to fetch video data.' });
   }
 });
