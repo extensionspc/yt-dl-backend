@@ -3,9 +3,7 @@ const ytdl = require('ytdl-core');
 const cors = require('cors');
 
 const app = express();
-app.use(cors());
-
-const proxyUrl = 'https://cors-anywhere.herokuapp.com/';  // Example proxy
+app.use(cors()); // Enable CORS
 
 app.get('/api/video', async (req, res) => {
     const videoUrl = req.query.url;
@@ -14,7 +12,7 @@ app.get('/api/video', async (req, res) => {
     }
 
     try {
-        const info = await ytdl.getInfo(proxyUrl + videoUrl);
+        const info = await ytdl.getInfo(videoUrl);
         const downloads = info.formats.map(format => ({
             url: format.url,
             extension: format.container,
