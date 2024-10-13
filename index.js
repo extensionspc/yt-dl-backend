@@ -16,20 +16,25 @@ app.get('/api/video', async (req, res) => {
 
   try {
     const info = await ytdl.getInfo(videoUrl, {
-      requestOptions: { headers: { 'User-Agent': 'Mozilla/5.0' } }
+      requestOptions: {
+        headers: {
+          'User-Agent': 'Mozilla/5.0',
+          'Accept-Language': 'en-US,en;q=0.9',
+        },
+      },
     });
-    
+
     res.status(200).json({
       title: info.videoDetails.title,
       thumbnail: info.videoDetails.thumbnails[0].url,
-      downloads: info.formats.map(format => ({
+      downloads: info.formats.map((format) => ({
         url: format.url,
         extension: format.container,
-        size: format.contentLength || 'N/A'
-      }))
+        size: format.contentLength || 'N/A',
+      })),
     });
   } catch (error) {
-    console.error('Error fetching video:', error);  // Log error details
+    console.error('Error fetching video:', error.message);
     res.status(500).json({ error: `Failed to fetch video data: ${error.message}` });
   }
 });
