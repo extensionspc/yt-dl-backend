@@ -5,6 +5,11 @@ const cors = require('cors');
 const app = express();
 app.use(cors());  // Enable CORS
 
+// Root Route for Testing
+app.get('/', (req, res) => {
+  res.send('API is running. Use /api/video?url=<youtube-url>');
+});
+
 // API Route to Fetch Video Info
 app.get('/api/video', async (req, res) => {
   const videoUrl = req.query.url;
@@ -21,7 +26,7 @@ app.get('/api/video', async (req, res) => {
       }))
     });
   } catch (error) {
-    console.error('Error fetching video:', error);  // Log detailed error
+    console.error('Error fetching video:', error);  // Log error details
     res.status(500).json({ error: `Failed to fetch video data: ${error.message}` });
   }
 });
