@@ -10,12 +10,15 @@ app.get('/', (req, res) => {
   res.send('API is running. Use /api/video?url=<youtube-url>');
 });
 
-// API Route to Fetch Video Info
+// API Route to Fetch Video Info via Proxy
 app.get('/api/video', async (req, res) => {
   const videoUrl = req.query.url;
 
   try {
-    const info = await ytdl.getInfo(videoUrl, {
+    const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
+    const proxiedUrl = `${proxyUrl}${videoUrl}`;
+
+    const info = await ytdl.getInfo(proxiedUrl, {
       requestOptions: {
         headers: {
           'User-Agent': 'Mozilla/5.0',
