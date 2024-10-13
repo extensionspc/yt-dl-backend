@@ -3,8 +3,14 @@ const ytdl = require('ytdl-core');
 const cors = require('cors');
 
 const app = express();
-app.use(cors());
+app.use(cors()); // Enable CORS
 
+// Root route to test if the server is running
+app.get('/', (req, res) => {
+    res.send('API is running. Use /api/video?url=<youtube-url>');
+});
+
+// API route to fetch video info
 app.get('/api/video', async (req, res) => {
     const videoUrl = req.query.url;
     if (!ytdl.validateURL(videoUrl)) {
@@ -25,7 +31,7 @@ app.get('/api/video', async (req, res) => {
             downloads,
         });
     } catch (error) {
-        console.error('Error:', error);
+        console.error('Error fetching video:', error);
         res.status(500).json({ error: 'Failed to fetch video data.' });
     }
 });
