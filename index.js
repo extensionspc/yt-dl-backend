@@ -5,7 +5,7 @@ const cors = require('cors');
 const app = express();
 app.use(cors());  // Enable CORS
 
-// Route to handle video fetching
+// API Route to Fetch Video Info
 app.get('/api/video', async (req, res) => {
   const videoUrl = req.query.url;
 
@@ -21,8 +21,8 @@ app.get('/api/video', async (req, res) => {
       }))
     });
   } catch (error) {
-    console.error('Error fetching video:', error.message);
-    res.status(500).json({ error: 'Failed to fetch video data.' });
+    console.error('Error fetching video:', error);  // Log detailed error
+    res.status(500).json({ error: `Failed to fetch video data: ${error.message}` });
   }
 });
 
