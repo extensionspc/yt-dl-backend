@@ -1,0 +1,9 @@
+{
+  "version": 2,
+  "builds": [
+    { "src": "api/video.js", "use": "@vercel/node" }
+  ],
+  "routes": [
+    { "src": "/api/video", "dest": "api/video.js" }
+  ]
+}
