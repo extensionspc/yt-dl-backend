@@ -10,15 +10,22 @@ app.get('/', (req, res) => {
   res.send('API is running. Use /api/video?url=<youtube-url>');
 });
 
-// API Route to Fetch Video Info via Proxy
+// Helper function to validate YouTube URLs
+const isValidYouTubeUrl = (url) => {
+  const regex = /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/.+$/;
+  return regex.test(url);
+};
+
+// API Route to Fetch Video Info
 app.get('/api/video', async (req, res) => {
   const videoUrl = req.query.url;
 
-  try {
-    const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-    const proxiedUrl = `${proxyUrl}${videoUrl}`;
+  if (!isValidYouTubeUrl(videoUrl)) {
+    return res.status(400).json({ error: 'Invalid YouTube URL.' });
+  }
 
-    const info = await ytdl.getInfo(proxiedUrl, {
+  try {
+    const info = await ytdl.getInfo(videoUrl, {
       requestOptions: {
         headers: {
           'User-Agent': 'Mozilla/5.0',
