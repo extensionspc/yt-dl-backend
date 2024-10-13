@@ -1,5 +1,5 @@
 const express = require('express');
-const youtubedl = require('youtube-dl-exec');
+const ytdl = require('ytdl-core');
 const cors = require('cors');
 
 const app = express();
@@ -10,14 +10,14 @@ app.get('/api/video', async (req, res) => {
   const videoUrl = req.query.url;
 
   try {
-    const info = await youtubedl(videoUrl, { dumpSingleJson: true });
+    const info = await ytdl.getInfo(videoUrl);
     res.status(200).json({
-      title: info.title,
-      thumbnail: info.thumbnail,
+      title: info.videoDetails.title,
+      thumbnail: info.videoDetails.thumbnails[0].url,
       downloads: info.formats.map(format => ({
         url: format.url,
-        extension: format.ext,
-        size: format.filesize || 'N/A'
+        extension: format.container,
+        size: format.contentLength || 'N/A'
       }))
     });
   } catch (error) {
